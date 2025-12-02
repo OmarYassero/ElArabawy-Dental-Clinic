@@ -287,6 +287,36 @@
 			to { opacity: 1; }
 		}
 
+		/* Textarea styles */
+		.form-group textarea {
+			width: 100%;
+			padding: 14px 14px 14px 42px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			background-color: var(--input-bg);
+			font-size: 16px;
+			color: var(--text-color);
+			transition: border-color 0.3s, background-color 0.3s;
+			resize: vertical;
+			min-height: 80px;
+			font-family: inherit;
+		}
+
+		.form-group textarea:focus {
+			border-color: var(--primary-color);
+			background-color: #fff;
+			outline: none;
+		}
+
+		.form-group textarea:focus + label,
+		.form-group textarea:not(:placeholder-shown) + label {
+			top: -8px;
+			font-size: 12px;
+			color: var(--primary-color);
+			background-color: var(--bg-color);
+			padding: 0 5px;
+		}
+
 		@media (max-width: 600px) {
 			.container {
 				padding: 25px 20px;
@@ -334,7 +364,6 @@
 				<label for="age">Age</label>
 			</div>          
 
-
 				<div class="form-group">
 					<span class="icon">📞</span>
 					<input type="tel" id="phone" name="phone" placeholder=" " required maxlength="12" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" />
@@ -357,10 +386,30 @@
 				<span class="icon">👨‍⚕️</span>
 				<select id="doctor" name="doctor" required>
 					<option value="" disabled selected hidden>Select a doctor</option>
-					<option value="Dr. Ahmed">Dr. Ahmed</option>
-					<option value="Dr. Essan">Dr. Essan</option>
-					<option value="Dr. Romy">Dr. Romy</option>
+					<option value="Dr. Ahmed Hassen">Dr. Ahmed Hassen</option>
+					<option value="Dr. Romissa Ibrahim">Dr. Romissa Ibrahim</option>
+					<option value="Dr. Donia">Dr. Donia</option>
+					<option value="Dr. Mahmoud Eglan">Dr. Mahmoud Eglan</option>
 				</select>
+			</div>
+
+			<div class="form-group">
+				<span class="icon">👨‍💼</span>
+				<input type="text" id="assignedBy" name="assignedBy" placeholder=" " required />
+				<label for="assignedBy">Assigned By (Your Name)</label>
+			</div>
+
+			<div class="form-group">
+				<span class="icon">💰</span>
+				<input type="number" id="payment" name="payment" placeholder=" " required min="0" step="0.01" style="padding-left: 42px; padding-right: 40px;" />
+				<label for="payment">Amount Paid</label>
+				<span style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #666;">EGP</span>
+			</div>
+
+			<div class="form-group">
+				<span class="icon">📝</span>
+				<textarea id="operationDetails" name="operationDetails" placeholder=" " rows="3" required></textarea>
+				<label for="operationDetails">Operation Details / Notes</label>
 			</div>
 
 			<div class="form-group">
@@ -432,6 +481,9 @@
 		params.append("procedure", document.getElementById("procedure").value);
 		params.append("doctor", document.getElementById("doctor").value);
 		params.append("phone", document.getElementById("phone").value);
+		params.append("assignedBy", document.getElementById("assignedBy").value);
+		params.append("payment", document.getElementById("payment").value);
+		params.append("operationDetails", document.getElementById("operationDetails").value);
 		params.append("from", document.getElementById("from").value);
 
 		fetch(`${baseURL}?${params.toString()}`)
@@ -458,375 +510,5 @@
 			});
 	});
 	</script>
-
-
-
-
 </body>
-</html>
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Patient Registration</title>
-	<style>
-		:root {
-			--primary-color: #007bff;
-			--secondary-color: #f8f9fa;
-			--text-color: #212529;
-			--bg-color: #ffffff;
-			--input-bg: #f1f1f1;
-			--dark-color: #343a40;
-		}
-
-		body.dark {
-			--primary-color: #0d6efd;
-			--secondary-color: #121212;
-			--text-color: #f8f9fa;
-			--bg-color: #1e1e1e;
-			--input-bg: #2a2a2a;
-		}
-
-		* {
-			box-sizing: border-box;
-			margin: 0;
-			padding: 0;
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-		}
-
-		body {
-			background-color: var(--secondary-color);
-			color: var(--text-color);
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			min-height: 100vh;
-			padding: 30px;
-			transition: background-color 0.3s ease, color 0.3s ease;
-		}
-
-		.container {
-			background-color: var(--bg-color);
-			border-radius: 15px;
-			box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-			padding: 40px;
-			max-width: 600px;
-			width: 100%;
-			position: relative;
-			transition: background-color 0.3s ease;
-		}
-
-		h2 {
-			text-align: center;
-			margin-bottom: 30px;
-			color: var(--primary-color);
-		}
-
-		.toggle-theme {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			background: var(--dark-color);
-			color: white;
-			border: none;
-			padding: 10px 12px;
-			border-radius: 50%;
-			cursor: pointer;
-			font-size: 18px;
-			transition: background 0.3s ease;
-		}
-
-		.toggle-theme:hover {
-			background: #1d2124;
-		}
-
-		.form-group {
-			position: relative;
-			margin-top: 25px;
-		}
-
-		.form-group input {
-			width: 100%;
-			padding: 14px 14px 14px 42px;
-			border: 1px solid #ccc;
-			border-radius: 8px;
-			background-color: var(--input-bg);
-			font-size: 16px;
-			color: var(--text-color);
-			transition: border-color 0.3s, background-color 0.3s;
-		}
-
-		.form-group input:focus {
-			border-color: var(--primary-color);
-			background-color: #fff;
-			outline: none;
-		}
-
-		.form-group input:focus + label,
-		.form-group input:not(:placeholder-shown) + label {
-			top: -8px;
-			font-size: 12px;
-			color: var(--primary-color);
-		}
-
-		.form-group label {
-			position: absolute;
-			left: 42px;
-			top: 50%;
-			transform: translateY(-50%);
-			color: #777;
-			font-size: 16px;
-			background-color: transparent;
-			transition: 0.2s ease all;
-			pointer-events: none;
-		}
-
-		.form-group .icon {
-			position: absolute;
-			top: 50%;
-			left: 12px;
-			transform: translateY(-50%);
-			font-size: 18px;
-			color: #666;
-			pointer-events: none;
-		}
-
-		select {
-			width: 100%;
-			padding: 14px 12px 14px 42px;
-			border: 1px solid #ccc;
-			border-radius: 8px;
-			background-color: var(--input-bg);
-			font-size: 16px;
-			color: var(--text-color);
-			appearance: none;
-			transition: border-color 0.3s, background-color 0.3s;
-		}
-
-		select:focus {
-			border-color: var(--primary-color);
-			background-color: #fff;
-			outline: none;
-		}
-
-		.button-group {
-			display: flex;
-			gap: 15px;
-			margin-top: 35px;
-		}
-
-		button {
-			flex: 1;
-			padding: 14px;
-			border: none;
-			border-radius: 8px;
-			font-size: 16px;
-			font-weight: bold;
-			cursor: pointer;
-			transition: background-color 0.3s ease;
-		}
-
-		.btn-submit {
-			background-color: var(--primary-color);
-			color: white;
-		}
-
-		.btn-submit:hover {
-			background-color: #0056b3;
-		}
-
-		.btn-dark {
-			background-color: var(--dark-color);
-			color: white;
-		}
-
-		.btn-dark:hover {
-			background-color: #1d2124;
-		}
-
-		@media (max-width: 600px) {
-			.container {
-				padding: 25px 20px;
-			}
-
-			h2 {
-				font-size: 22px;
-			}
-
-			.button-group {
-				flex-direction: column;
-			}
-		}
-	</style>
-</head>
-<body>
-
-	<div class="container">
-		<button class="toggle-theme" onclick="toggleTheme()">🌙</button>
-		<h2>Patient Registration Form</h2>
-			<form id="form" autocomplete="off">
-
-			<div class="form-group">
-				<span class="icon">👤</span>
-				<input type="text" id="name" name="name" placeholder=" " required />
-				<label for="name">Full Name</label>
-			</div>
-
-			<div class="form-group">
-				<span class="icon">🎂</span>
-				<input type="number" id="age" name="age" placeholder=" " required min="0" max="100" oninput="if(this.value > 100) this.value = 100; if(this.value < 0) this.value = 0;"/>
-				<label for="age">Age</label>
-			</div>          
-
-			<div class="form-group">
-				<span class="icon">💉</span>
-				<select id="procedure" name="procedure" required>
-					<option value="" disabled selected hidden>Select a procedure</option>
-					<option value="Dental Cleaning">Dental Cleaning</option>
-					<option value="Root Canal">Root Canal</option>
-					<option value="Teeth Whitening">Teeth Whitening</option>
-					<option value="Braces Consultation">Braces Consultation</option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<span class="icon">👨‍⚕️</span>
-				<select id="doctor" name="doctor" required>
-					<option value="" disabled selected hidden>Select a doctor</option>
-					<option value="Dr. Ahmed">Dr. Ahmed</option>
-					<option value="Dr. Essan">Dr. Essan</option>
-					<option value="Dr. Romy">Dr. Romy</option>
-				</select>
-			</div>
-
-			<div class="form-group">
-				<span class="icon">📞</span>
-				<input type="tel" id="phone" name="phone" placeholder=" " required maxlength="12" oninput="this.value = this.value.replace(/[^0-9+]/g, '')" />
-				<label for="phone">Phone Number</label>
-			</div>
-
-			<div class="form-group">
-				<span class="icon">🌐</span>
-				<select id="from" name="from" required>
-					<option value="" disabled selected hidden>Where did you hear about us?</option>
-					<option value="Facebook">Facebook</option>
-					<option value="Instagram">Instagram</option>
-					<option value="Friend">Friend</option>
-					<option value="Google">Google</option>
-				</select>
-			</div>
-
-			<div class="button-group">
-				<button type="submit" class="btn-submit">Submit</button>
-			</div>
-		</form>
-	</div>
-
-	<script>
-	function toggleTheme() {
-		document.body.classList.toggle('dark');
-		const button = document.querySelector('.toggle-theme');
-		if (document.body.classList.contains('dark')) {
-			button.textContent = '☀️';
-		} else {
-			button.textContent = '🌙';
-		}
-	}
-
-	document.getElementById("form").addEventListener("submit", function(e) {
-		e.preventDefault();
-
-		const baseURL = "https://script.google.com/macros/s/AKfycbyM1kYQCWYeEMea1buPqayIEhWv3e0Gl7fV1Ks8XuEkuGMC-9Nu4HugY92DCXQiZPYi/exec";
-		const params = new URLSearchParams();
-		params.append("name", document.getElementById("name").value);
-		params.append("age", document.getElementById("age").value);
-		params.append("procedure", document.getElementById("procedure").value);
-		params.append("doctor", document.getElementById("doctor").value);
-		params.append("phone", document.getElementById("phone").value);
-		params.append("from", document.getElementById("from").value);
-
-		fetch(`${baseURL}?${params.toString()}`)
-			.then(res => res.text())
-			.then(text => {
-				alert("✅ Submitted successfully!");
-				document.getElementById("form").reset();
-			})
-			.catch(err => {
-				alert("❌ Failed to submit: " + err);
-			});
-	});
-	</script>
-
-
-
-
-</body>
-</html>
-
-<!--The scroll project 
-<!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-
-<body>
-
-	<h2 class="title">Scroll to see the magic</h2>
-	<section></section>
-	<div class="container">
-		<p>
-			Hey, my name is Jack and I have helped more than 157 high schoolers gain admission into their dream college.
-LET'S BE HONEST: the college application process is often confusing and stressful. But it just doesn't have to be that way! 
-
-My goal is to pass on my college admission knowledge, strategies, and unique perspective to high school students in a young, fun, relatable, older-brother type manner - and I've been doing that for the last 12 years.
-
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			Hey, my name is Jack and I have helped more than 157 high schoolers gain admission into their dream college.
-LET'S BE HONEST: the college application process is often confusing and stressful. But it just doesn't have to be that way! 
-
-My goal is to pass on my college admission knowledge, strategies, and unique perspective to high school students in a young, fun, relatable, older-brother type manner - and I've been doing that for the last 12 years.
-
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			Hey, my name is Jack and I have helped more than 157 high schoolers gain admission into their dream college.
-LET'S BE HONEST: the college application process is often confusing and stressful. But it just doesn't have to be that way! 
-
-My goal is to pass on my college admission knowledge, strategies, and unique perspective to high school students in a young, fun, relatable, older-brother type manner - and I've been doing that for the last 12 years.
-
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			Hey, my name is Jack and I have helped more than 157 high schoolers gain admission into their dream college.
-LET'S BE HONEST: the college application process is often confusing and stressful. But it just doesn't have to be that way! 
-
-My goal is to pass on my college admission knowledge, strategies, and unique perspective to high school students in a young, fun, relatable, older-brother type manner - and I've been doing that for the last 12 years.
-
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			Hey, my name is Jack and I have helped more than 157 high schoolers gain admission into their dream college.
-LET'S BE HONEST: the college application process is often confusing and stressful. But it just doesn't have to be that way! 
-
-My goal is to pass on my college admission knowledge, strategies, and unique perspective to high school students in a young, fun, relatable, older-brother type manner - and I've been doing that for the last 12 years.
-
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			Hey, my name is Jack and I have helped more than 157 high schoolers gain admission into their dream college.
-LET'S BE HONEST: the college application process is often confusing and stressful. But it just doesn't have to be that way! 
-
-My goal is to pass on my college admission knowledge, strategies, and unique perspective to high school students in a young, fun, relatable, older-brother type manner - and I've been doing that for the last 12 years.
-
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			the action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say something
-If you are interested in gaining clarity, peace of mind, and a detailed step-by-step program to help your child through the college application process, watch this free case study and see for yourself, as I highlight the hundreds of lives changed by following my new-era college planning method.
-			the action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say somethingthe action or practice of inflicting severe pain or suffering on someone as a punishment or in order to force them to do or say something
-		</p>
-	</div>
-
-	
-  <script src="script.js"></script>
-</body>
-
 </html>
